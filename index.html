@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh nè</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .question {
+            font-size: 2.5rem;
+            color: #e91e63;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 60px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 120px); /* trừ phần tiêu đề */
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            position: absolute;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: 0.2s;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+        }
+
+        .btn-no.disabled {
+            display: none;
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: #ff6b6b;
+            z-index: 1000;
+            animation: celebrate 2s ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes celebrate {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="question">Yêu nhau nha :33</div>
+    <div class="buttons-container" id="buttonsContainer">
+        <button class="btn btn-yes" id="yesBtn" onclick="handleYes()">Có ❤️</button>
+        <button class="btn btn-no" id="noBtn" onclick="handleNo()">Không</button>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const container = document.getElementById('buttonsContainer');
+
+        const noTexts = [
+            "Không được chọn nút này!",
+            "Đừng chọn nút này nữa!",
+            "Tại sao lại chọn nút này?",
+            "Chọn nút bên cạnh đi!",
+            "Không cho phép!",
+            "Cấm chọn!",
+            "Đừng cố gắng nữa!",
+            "Chọn nút CÓ đi!",
+            "Ơ kìa, đừng àm mình buồi chứ",
+            "Bấm vô đây = làm tổn thương mik đó",
+            "Thật sự muốn chọn KHÔNG à?",
+            "Còn tiếp tục nữa hả...",
+            "Thôi mà 😢",
+            "Mik giận á...",
+            "Đừng nữa được hong...",
+            "Huhu mik buồn quá",
+            "Chỉ có nút CÓ mới là lối ra",
+            "Làm ơn đó...",
+            "Một lần cuối, đừng nữa...",
+            "Thôi xong, nút KHÔNG biến mất!"
+        ];
+
+        function handleNo() {
+            clickCount++;
+
+            // Thay nội dung
+            if (clickCount <= noTexts.length) {
+                noBtn.textContent = noTexts[clickCount - 1];
+            }
+
+            // Di chuyển vị trí ngẫu nhiên
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            const randX = Math.random() * (containerWidth - btnWidth);
+            const randY = Math.random() * (containerHeight - btnHeight);
+
+            noBtn.style.left = randX + "px";
+            noBtn.style.top = randY + "px";
+
+            // Sau 20 lần thì ẩn nút "Không"
+            if (clickCount >= 20) {
+                noBtn.classList.add("disabled");
+            }
+        }
+
+        function handleYes() {
+            const celebration = document.createElement("div");
+            celebration.className = "celebration";
+            celebration.innerHTML = "🎉 iu iu 🎉";
+            document.body.appendChild(celebration);
+
+            document.body.style.background = "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)";
+
+            setTimeout(() => {
+                document.querySelector(".buttons-container").style.display = "none";
+                document.querySelector(".question").innerHTML = "Cảm ơn nha 💕💕💕";
+                celebration.remove();
+            }, 2000);
+        }
+
+        // Đặt vị trí ban đầu cho nút
+        yesBtn.style.left = "30%";
+        yesBtn.style.top = "50%";
+        noBtn.style.left = "60%";
+        noBtn.style.top = "50%";
+    </script>
+</body>
+</html>
